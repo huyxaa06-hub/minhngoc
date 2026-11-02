@@ -20,14 +20,14 @@
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div class="max-w-5xl mx-auto space-y-6">
         
         <!-- Tiêu đề -->
         <header class="text-center space-y-2">
             <h1 class="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
                 <i class="fa-solid fa-boxes-packing mr-2"></i>Quản Lý Số Lượng Đóng Gói
             </h1>
-            <p class="text-slate-400 text-sm">Lưu trữ thông tin mã hàng nhanh chóng & tiện lợi</p>
+            <p class="text-slate-400 text-sm">Lưu trữ thông tin mã hàng & ký hiệu bao bì nhanh chóng</p>
         </header>
 
         <!-- Form Nhập Liệu -->
@@ -35,11 +35,16 @@
             <h2 class="text-lg font-semibold text-slate-200 border-b border-slate-700/50 pb-2">
                 <i class="fa-solid fa-plus-circle mr-2 text-blue-400"></i>Thêm / Cập Nhật Mã Hàng
             </h2>
-            <form id="packingForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <form id="packingForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <input type="hidden" id="editIndex" value="">
                 <div>
                     <label class="block text-xs font-medium text-slate-400 mb-1">MÃ HÀNG</label>
                     <input type="text" id="itemCode" required placeholder="VD: SP-001" 
+                        class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-blue-500 uppercase">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">KÝ HIỆU BAO BÌ</label>
+                    <input type="text" id="packageSymbol" required placeholder="VD: Thùng A, Túi Z..." 
                         class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-blue-500 uppercase">
                 </div>
                 <div>
@@ -66,7 +71,7 @@
                 </h2>
                 <div class="w-full md:w-72 relative">
                     <i class="fa-solid fa-search absolute left-3 top-3.5 text-slate-400 text-sm"></i>
-                    <input type="text" id="searchInput" onkeyup="renderTable()" placeholder="Tìm kiếm mã hàng..." 
+                    <input type="text" id="searchInput" onkeyup="renderTable()" placeholder="Tìm kiếm mã hoặc bao bì..." 
                         class="w-full bg-slate-900/50 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
                 </div>
             </div>
@@ -76,8 +81,9 @@
                         <tr class="bg-slate-800/50 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-700/50">
                             <th class="p-4 font-semibold">STT</th>
                             <th class="p-4 font-semibold">Mã Hàng</th>
+                            <th class="p-4 font-semibold">Ký Hiệu Bao Bì</th>
                             <th class="p-4 font-semibold">Số Lượng Đóng Gói</th>
-                            <th class="p-4 font-semibold">Cập Nhật Gần Nhất</th>
+                            <th class="p-4 font-semibold">Cập Nhật</th>
                             <th class="p-4 font-semibold text-center">Thao Tác</th>
                         </tr>
                     </thead>
@@ -88,7 +94,7 @@
             </div>
             <!-- Tổng kết -->
             <div class="p-4 bg-slate-800/30 border-t border-slate-700/50 flex justify-between items-center text-sm text-slate-300">
-                <span>Tổng số mã: <strong id="totalCodes" class="text-white">0</strong></span>
+                <span>Tổng số dòng: <strong id="totalCodes" class="text-white">0</strong></span>
                 <span>Tổng số lượng: <strong id="totalQty" class="text-blue-400">0</strong></span>
             </div>
         </div>
