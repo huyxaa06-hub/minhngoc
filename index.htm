@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Đóng Gói Mã Hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- Tiêu đề -->
+        <header class="text-center space-y-2">
+            <h1 class="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                <i class="fa-solid fa-boxes-packing mr-2"></i>Quản Lý Số Lượng Đóng Gói
+            </h1>
+            <p class="text-slate-400 text-sm">Lưu trữ thông tin mã hàng nhanh chóng & tiện lợi</p>
+        </header>
+
+        <!-- Form Nhập Liệu -->
+        <div class="glass-card p-6 rounded-2xl shadow-xl space-y-4">
+            <h2 class="text-lg font-semibold text-slate-200 border-b border-slate-700/50 pb-2">
+                <i class="fa-solid fa-plus-circle mr-2 text-blue-400"></i>Thêm / Cập Nhật Mã Hàng
+            </h2>
+            <form id="packingForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <input type="hidden" id="editIndex" value="">
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">MÃ HÀNG</label>
+                    <input type="text" id="itemCode" required placeholder="VD: SP-001" 
+                        class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-blue-500 uppercase">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1">SỐ LƯỢNG ĐÓNG GÓI</label>
+                    <input type="number" id="itemQty" required min="1" placeholder="VD: 100" 
+                        class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="flex items-end gap-2">
+                    <button type="submit" id="saveBtn" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 px-4 rounded-xl transition duration-200 shadow-lg shadow-blue-600/30">
+                        <i class="fa-solid fa-floppy-disk mr-2"></i>Lưu
+                    </button>
+                    <button type="button" id="cancelBtn" onclick="resetForm()" class="hidden bg-slate-700 hover:bg-slate-600 text-slate-300 py-2.5 px-4 rounded-xl transition">
+                        Hủy
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Bảng Dữ Liệu -->
+        <div class="glass-card rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-4 border-b border-slate-700/50 flex flex-col md:flex-row justify-between items-center gap-4">
+                <h2 class="text-lg font-semibold text-slate-200">
+                    <i class="fa-solid fa-list-check mr-2 text-indigo-400"></i>Danh Sách Đóng Gói
+                </h2>
+                <div class="w-full md:w-72 relative">
+                    <i class="fa-solid fa-search absolute left-3 top-3.5 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" onkeyup="renderTable()" placeholder="Tìm kiếm mã hàng..." 
+                        class="w-full bg-slate-900/50 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-800/50 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-700/50">
+                            <th class="p-4 font-semibold">STT</th>
+                            <th class="p-4 font-semibold">Mã Hàng</th>
+                            <th class="p-4 font-semibold">Số Lượng Đóng Gói</th>
+                            <th class="p-4 font-semibold">Cập Nhật Gần Nhất</th>
+                            <th class="p-4 font-semibold text-center">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-slate-700/40 text-sm">
+                        <!-- Dữ liệu được chèn bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Tổng kết -->
+            <div class="p-4 bg-slate-800/30 border-t border-slate-700/50 flex justify-between items-center text-sm text-slate-300">
+                <span>Tổng số mã: <strong id="totalCodes" class="text-white">0</strong></span>
+                <span>Tổng số lượng: <strong id="totalQty" class="text-blue-400">0</strong></span>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
