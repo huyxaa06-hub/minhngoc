@@ -2,6 +2,7 @@ let packingData = JSON.parse(localStorage.getItem('packingData')) || [];
 
 const form = document.getElementById('packingForm');
 const itemCodeInput = document.getElementById('itemCode');
+const packageSymbolInput = document.getElementById('packageSymbol');
 const itemQtyInput = document.getElementById('itemQty');
 const editIndexInput = document.getElementById('editIndex');
 const cancelBtn = document.getElementById('cancelBtn');
@@ -10,18 +11,17 @@ const saveBtn = document.getElementById('saveBtn');
 form.addEventListener('submit', function (e) {
     e.preventDefault();
     const code = itemCodeInput.value.trim().toUpperCase();
+    const symbol = packageSymbolInput.value.trim().toUpperCase();
     const qty = parseInt(itemQtyInput.value);
     const editIndex = editIndexInput.value;
     const now = new Date().toLocaleString('vi-VN');
 
-    if (!code || isNaN(qty)) return;
+    if (!code || !symbol || isNaN(qty)) return;
 
     if (editIndex === "") {
-        // Thêm mới (nếu mã đã tồn tại thì cộng dồn hoặc thêm mới tùy ý, ở đây cho phép trùng mã nhưng phân biệt dòng hoặc bạn có thể gộp)
-        packingData.push({ code, qty, updatedAt: now });
+        packingData.push({ code, symbol, qty, updatedAt: now });
     } else {
-        // Chỉnh sửa
-        packingData[editIndex] = { code, qty, updatedAt: now };
+        packingData[editIndex] = { code, symbol, qty, updatedAt: now };
     }
 
     saveAndReset();
@@ -32,16 +32,18 @@ function renderTable() {
     const tableBody = document.getElementById('tableBody');
     tableBody.innerHTML = '';
 
-    let filteredData = packingData.filter(item => item.code.toLowerCase().includes(searchKeyword));
+    let filteredData = packingData.filter(item => 
+        item.code.toLowerCase().includes(searchKeyword) || 
+        item.symbol.toLowerCase().includes(searchKeyword)
+    );
     
     let totalQuantity = 0;
 
     if (filteredData.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500">Không tìm thấy dữ liệu phù hợp</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-500">Không tìm thấy dữ liệu phù hợp</td></tr>`;
     }
 
     filteredData.forEach((item, index) => {
-        // Tìm đúng index gốc trong mảng chính
         const originalIndex = packingData.indexOf(item);
         totalQuantity += item.qty;
 
@@ -49,6 +51,11 @@ function renderTable() {
             <tr class="hover:bg-slate-800/30 transition">
                 <td class="p-4 text-slate-400">${originalIndex + 1}</td>
                 <td class="p-4 font-medium text-slate-100">${item.code}</td>
+                <td class="p-4">
+                    <span class="bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-2.5 py-1 rounded-lg text-xs font-semibold">
+                        ${item.symbol}
+                    </span>
+                </td>
                 <td class="p-4 text-blue-400 font-semibold">${item.qty.toLocaleString()}</td>
                 <td class="p-4 text-slate-400 text-xs">${item.updatedAt}</td>
                 <td class="p-4 text-center space-x-2">
@@ -70,6 +77,7 @@ function renderTable() {
 function editItem(index) {
     const item = packingData[index];
     itemCodeInput.value = item.code;
+    packageSymbolInput.value = item.symbol;
     itemQtyInput.value = item.qty;
     editIndexInput.value = index;
     
@@ -98,5 +106,4 @@ function saveAndReset() {
     renderTable();
 }
 
-// Chạy lần đầu khi load trang
 renderTable();
